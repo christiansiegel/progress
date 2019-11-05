@@ -1,12 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Progress Page</title>
+  <title>Progress</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <style>
+    .bold {
+      font-weight: bold;
+    }
+    .align-left {
+      float: left;
+    }
+    .align-right {
+      float: right;
+    }
+    .bar-wrapper {
+      position: relative;
+    }
+    .bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .margin-16-between:not(:first-child) {
+      margin-top: 16px;
+    }
+    html,
+    body,
+    .app {
+      height: 100%;
+      margin: 0;
+    }
+  </style>
 </head>
 
 <body>
-Hello World
+  <div id="app" class="w3-container w3-padding-16">
+    <ul class="w3-ul w3-card-4 margin-16-between" v-for="group in groups">
+      <li v-for="item in group">
+        <div>
+          <div class="w3-large bold align-left">{{ item.name }}</div>
+          <div class="w3-large align-right">{{ item.progressText }}</div>
+          <div style="clear: both;"></div>
+        </div>
+        <div class="bar-wrapper"> &nbsp;
+          <div class="bar w3-light-grey w3-round" v-bind:style="{width: item.maxPercent + '%'}"> &nbsp; </div>
+          <div class="bar w3-orange w3-round" v-bind:style="{width: item.percent + '%'}"> &nbsp; </div>
+          <div class="bar w3-blue w3-round" v-bind:style="{width: Math.min(item.percent, item.maxPercent) + '%'}"> &nbsp; </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        groups: []
+      },
+      mounted() {
+        this.load()
+      },
+      methods: {
+        load() {
+          axios.get('/api').then(res => this.groups = res.data)
+        }
+      },
+    })
+  </script>
 </body>
 
 </html>
