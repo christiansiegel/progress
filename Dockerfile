@@ -1,7 +1,7 @@
 FROM node:13-alpine
 
-COPY favicon.ico \
-     index.html \
+COPY client.html \
+     favicon.ico \
      package.json \
      package-lock.json \
      server.js \

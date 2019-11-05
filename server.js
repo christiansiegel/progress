@@ -2,7 +2,7 @@ const http = require("http");
 const fetch = require("node-fetch");
 const fs = require("fs");
 
-const html = fs.readFileSync("index.html", "utf8");
+const html = fs.readFileSync("client.html", "utf8");
 const favicon = fs.readFileSync("favicon.ico");
 
 const rand = (max) => {
@@ -30,6 +30,6 @@ http.createServer().on("request", async (req, res) => {
     res.end(favicon);
   } else {
     //res.end(html);
-    res.end(fs.readFileSync("index.html", "utf8"));
+    res.end(fs.readFileSync("client.html", "utf8"));
   }
 }).listen(3333);
