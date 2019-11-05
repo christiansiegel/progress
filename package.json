@@ -9,12 +9,11 @@
       "web": "https://github.com/christiansiegel/"
     }
   ],
-  "licenses": [
-    {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
-    }
-  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christiansiegel/progress.git"
+  },
   "scripts": {
     "start": "node server.js"
   },
