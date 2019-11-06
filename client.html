@@ -29,6 +29,10 @@
     .margin-16-between:not(:first-child) {
       margin-top: 16px;
     }
+    .size-48 {
+      width: 48px;
+      height: 48px;
+    }
     html,
     body,
     .app {
@@ -41,16 +45,23 @@
 <body>
   <div id="app" class="w3-container w3-padding-16">
     <ul class="w3-ul w3-card-4 margin-16-between" v-for="group in groups">
-      <li v-for="item in group">
-        <div>
-          <div class="w3-large bold align-left">{{ item.name }}</div>
-          <div class="w3-large align-right">{{ item.progressText }}</div>
-          <div style="clear: both;"></div>
+      <li v-for="item in group" class="w3-row">
+        <div class="w3-third w3-hide-small size-48 w3-margin-right" >
+          <img class="w3-circle size-48"
+               v-if="item.avatar"
+               v-bind:src="item.avatar">
         </div>
-        <div class="bar-wrapper"> &nbsp;
-          <div class="bar w3-light-grey w3-round" v-bind:style="{width: item.maxPercent + '%'}"> &nbsp; </div>
-          <div class="bar w3-orange w3-round" v-bind:style="{width: item.percent + '%'}"> &nbsp; </div>
-          <div class="bar w3-blue w3-round" v-bind:style="{width: Math.min(item.percent, item.maxPercent) + '%'}"> &nbsp; </div>
+        <div class="w3-rest">
+          <div>
+            <div class="w3-large bold align-left">{{ item.name }}</div>
+            <div class="w3-large align-right">{{ item.progressText }}</div>
+            <div style="clear: both;"></div>
+          </div>
+          <div class="bar-wrapper"> &nbsp;
+            <div class="bar w3-light-grey w3-round" v-bind:style="{width: item.maxPercent + '%'}"> &nbsp; </div>
+            <div class="bar w3-orange w3-round" v-bind:style="{width: item.percent + '%'}"> &nbsp; </div>
+            <div class="bar w3-blue w3-round" v-bind:style="{width: Math.min(item.percent, item.maxPercent) + '%'}"> &nbsp; </div>
+          </div>
         </div>
       </li>
     </ul>
