@@ -1,6 +1,10 @@
 const http = require("http");
 const fetch = require("node-fetch");
 const fs = require("fs");
+const log4js = require('log4js');
+
+const logger = log4js.getLogger();
+logger.level = "info"
 
 const html = fs.readFileSync("client.html", "utf8");
 const favicon = fs.readFileSync("favicon.ico");
@@ -10,6 +14,7 @@ const rand = (max) => {
 }
 
 http.createServer().on("request", async (req, res) => {
+  logger.info(`${req.method} ${req.url}`)
   if (req.url === "/api") {
     const response = await fetch("https://pokeapi.co/api/v2/pokemon");
     const pokemon = await response.json();
