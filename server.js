@@ -29,7 +29,7 @@ http.createServer().on("request", async (req, res) => {
         progressText: p.percent + " / " + p.maxPercent
       }));
     const groups = [items, [items[0]]];
-    console.log(items);
+    await new Promise(resolve => { setTimeout(resolve, 2000) }) // sleep
     res.end(JSON.stringify(groups));
   } else if (req.url === "/favicon.ico") {
     res.end(favicon);
