@@ -22,7 +22,8 @@ http.createServer().on("request", async (req, res) => {
       .map(p => ({
         percent: rand(100),
         maxPercent: rand(100),
-        name: p.name
+        name: p.name,
+        avatar: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.url.split("/").reverse()[1]}.png`
       }))
       .map(p => ({
         ...p,
