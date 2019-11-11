@@ -1,6 +1,8 @@
 # progress
 
-*UNDER DEVELOPMENT*
+Display animated progress bars with a VERY simple Node.js backend and Vue.js + W3.CSS frontend.
+
+![screenshot](doc/screenshot.png "Screenshot")
 
 ## setup
 
