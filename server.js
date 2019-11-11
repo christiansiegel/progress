@@ -16,26 +16,41 @@ const rand = (max) => {
 http.createServer().on("request", async (req, res) => {
   logger.info(`${req.method} ${req.url}`)
   if (req.url === "/api") {
-    const response = await fetch("https://pokeapi.co/api/v2/pokemon");
-    const pokemon = await response.json();
-    const items = pokemon.results
-      .map(p => ({
-        percent: rand(100),
-        maxPercent: rand(100),
-        name: p.name,
-        avatar: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.url.split("/").reverse()[1]}.png`
-      }))
-      .map(p => ({
-        ...p,
-        progressText: p.percent + " / " + p.maxPercent
-      }));
-    const groups = [items, [items[0]]];
-    await new Promise(resolve => { setTimeout(resolve, 2000) }) // sleep
-    res.end(JSON.stringify(groups));
+    // const data = await fetch("our company api");
+    await new Promise(resolve => { setTimeout(resolve, 2000) }) // artificial sleep
+
+    // just some static data for this little example backend:
+    const data = [
+      [
+        {
+          name: "Jon Doe",
+          percent: rand(100),
+          maxPercent: rand(100),
+          progressText: "almost done",
+          avatar: "https://avatars1.githubusercontent.com/u/13996624?s=460&v=4"
+        },
+        {
+          name: "Foo Bar",
+          percent: rand(100),
+          maxPercent: rand(100),
+          progressText: "way behind",
+          avatar: "https://avatars1.githubusercontent.com/u/13996624?s=460&v=4"
+        }
+      ],
+      [
+        {
+          name: "Total",
+          percent: rand(100),
+          maxPercent: rand(100),
+          progressText: "we'll see",
+        }
+      ]
+    ];
+    res.end(JSON.stringify(data));
   } else if (req.url === "/favicon.ico") {
     res.end(favicon);
   } else {
-    //res.end(html);
-    res.end(fs.readFileSync("client.html", "utf8"));
+    res.end(html);
+    //res.end(fs.readFileSync("client.html", "utf8")); // dev: live reload
   }
 }).listen(3333);
