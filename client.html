@@ -84,7 +84,7 @@
             <div style="clear: both;"></div>
           </div>
           <div class="bar-wrapper"> &nbsp;
-            <div class="bar w3-light-grey w3-round" :style="barTransformStyle[groupIdx][itemIdx].grey"> &nbsp; </div>
+            <div class="bar w3-light-blue w3-round" :style="barTransformStyle[groupIdx][itemIdx].idle"> &nbsp; </div>
             <div class="bar w3-orange w3-round" :style="barTransformStyle[groupIdx][itemIdx].orange"> &nbsp; </div>
             <div class="bar w3-blue w3-round" :style="barTransformStyle[groupIdx][itemIdx].blue"> &nbsp; </div>
           </div>
@@ -124,7 +124,7 @@
       computed: {
         barTransformStyle () {
           return this.groups.map(group => group.map(item => ({
-            grey: `transform: scaleX(${item.maxPercent / 100.0});`,
+            idle: `transform: scaleX(${item.maxPercent / 100.0});`,
             orange: `transform: scaleX(${item.percent / 100.0});`,
             blue: `transform: scaleX(${Math.min(item.percent, item.maxPercent) / 100.0});`
           })));
