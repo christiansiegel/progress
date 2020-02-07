@@ -29,33 +29,21 @@
       transform-origin: top left;
       transition: 0.5s ease-in-out;
     }
+    .loading-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      transform-origin: top left;
+      transition: 0.1s;
+    }
     .margin-16-between:not(:first-child) {
       margin-top: 16px;
     }
     .size-48 {
       width: 48px;
       height: 48px;
-    }
-    .loader {
-      border: 16px solid #2196F3; /* w3-blue */
-      border-top: 16px solid #ff9800; /* w3-orange */
-      border-radius: 50%;
-      animation: spin 2s linear infinite;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 120px;
-      height: 120px;
-      margin-top: -60px;
-      margin-left: -60px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .loading-filter {
-      filter: grayscale(1) blur(1px);
-      transition: 0.1s ease-in-out;
     }
     html,
     body,
@@ -68,9 +56,9 @@
 
 <body>
   <div id="app" class="w3-container w3-padding-16">
+    <div class="loading-bar w3-blue" :style="loadingBarTransformStyle"></div>
     <ul class="w3-ul w3-card-4 margin-16-between"
-        v-for="(group, groupIdx) in groups"
-        :class="[waiting ? 'loading-filter' : '']">
+        v-for="(group, groupIdx) in groups">
       <li v-for="(item, itemIdx) in group" class="w3-row">
         <div class="w3-third w3-hide-small size-48 w3-margin-right" >
           <img class="w3-circle size-48"
@@ -91,25 +79,26 @@
         </div>
       </li>
     </ul>
-    <div class="loader" v-if="waiting"></div>
   </div>
   <script>
     const refreshCycle = 1000; // millisecs
+    const millis = () => new Date().getTime();
     const app = new Vue({
       el: '#app',
       data: {
         groups: [],
         loading: false,
-        waiting: false
+        lastRefreshMillis: millis(),
+        millisSinceLastRefresh: 0
       },
       created() {
         this.load();
+        this.updateMillisSinceLastRefresh();
       },
       methods: {
         load() {
           if (this.loading) {
-            this.waiting = true;
-            setTimeout(this.load, 10);
+            setTimeout(this.load, 100);
             return;
           }
           this.loading = true;
@@ -117,8 +106,12 @@
           axios.get('/api').then(res => {
             this.groups = res.data;
             this.loading = false;
-            this.waiting = false;
+            this.lastRefreshMillis = millis()
           });
+        },
+        updateMillisSinceLastRefresh() {
+          this.millisSinceLastRefresh = millis() - this.lastRefreshMillis;
+          setTimeout(this.updateMillisSinceLastRefresh, 100);
         }
       },
       computed: {
@@ -128,6 +121,11 @@
             orange: `transform: scaleX(${item.percent / 100.0});`,
             blue: `transform: scaleX(${Math.min(item.percent, item.maxPercent) / 100.0});`
           })));
+        },
+        loadingBarTransformStyle () {
+          const overdue = refreshCycle > this.millisSinceLastRefresh ? 0 : this.millisSinceLastRefresh - refreshCycle;
+          const percent = overdue / (overdue + refreshCycle)
+          return `transform: scaleX(${percent});`;
         }
       }
     })
