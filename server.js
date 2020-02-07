@@ -17,7 +17,7 @@ http.createServer().on("request", async (req, res) => {
   logger.info(`${req.method} ${req.url}`)
   if (req.url === "/api") {
     // const data = await fetch("our company api");
-    await new Promise(resolve => { setTimeout(resolve, 2000) }) // artificial sleep
+    await new Promise(resolve => { setTimeout(resolve, 1000 + Math.random() * 5000) }) // artificial sleep
 
     // just some static data for this little example backend:
     const data = [
